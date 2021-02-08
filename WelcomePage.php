@@ -59,8 +59,8 @@ header('location: WelcomePage.php');
                 $_SESSION['mathematics'] = "Mathematics";
 
 
-
-          $sql = "SELECT * From `testattempt` WHERE stdid ='". $_SESSION['stid']."' LIMIT 1";
+          //check testscore to know whether the student has submitted
+          $sql = "SELECT * From `testscore` WHERE stdid ='". $_SESSION['stid']."' LIMIT 1";
 
     			$result = mysqli_query($link, $sql) or die (mysqli_error($link));
           $num_row = mysqli_num_rows($result);
@@ -75,15 +75,49 @@ header('location: WelcomePage.php');
                         </div> ';
                         session_destroy();
           } else {
+            //since the student has not submitted, check the system cookies
+            $sql = "SELECT * From `system_cookies` WHERE stdid ='". $_SESSION['stid']."' LIMIT 1";
+
+             $result = mysqli_query($link, $sql) or die (mysqli_error($link));
+              $num_row = mysqli_num_rows($result);
+                $row2 = mysqli_fetch_assoc($result);
+                if ($num_row > 0) {
+                  if ($row2['login_status'] == 'ACTIVE') {
+                    $error.='  <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                  <h5><i class="icon fa fa-ban"></i> Alert! </h5>
+                                  <h6>(ACESS DENIED)</h6>
+                                  You Have Logged In On Another System, Please Contact the Administrator
+                                </div> ';
+                                session_destroy();
+                  }else {
+                    $_SESSION['MathematicsNews'] = $row2['Mathematics'];
+                    $_SESSION['EnglishNews'] = $row2['English'];
+                    $_SESSION['BiologyNews'] = $row2['Biology'];
+                    $_SESSION['ChemistryNews'] = $row2['Chemistry'];
+                    $_SESSION['PhysicsNews'] = $row2['Physics'];
+                    $_SESSION['Current-affairsNews'] = $row2['Affairs'];
+                    $_SESSION['timecookies'] = $row2['time_cookies'];
+
+                    setcookie("id", $_SESSION['stid'], time() + 60 * 60);
+                    setcookie("Fname", $_SESSION['Fname'], time() + 60 * 60);
+                    setcookie("Lname", $_SESSION['Lname'], time() + 60 * 60);
+                    setcookie("username", $_SESSION['username'], time() + 60 * 60);
+                    setcookie("passport", $_SESSION['passport'], time() + 60 * 60);
+                    setcookie("mathematics", $_SESSION['mathematics'], time() + 60 * 60);
+                    header("Location: details.php");
+                  }
+                }else {
+                  setcookie("id", $_SESSION['stid'], time() + 60 * 60);
+                  setcookie("Fname", $_SESSION['Fname'], time() + 60 * 60);
+                  setcookie("Lname", $_SESSION['Lname'], time() + 60 * 60);
+                  setcookie("username", $_SESSION['username'], time() + 60 * 60);
+                  setcookie("passport", $_SESSION['passport'], time() + 60 * 60);
+                  setcookie("mathematics", $_SESSION['mathematics'], time() + 60 * 60);
+                  header("Location: details.php");
+                }
 
 
-            setcookie("id", $_SESSION['stid'], time() + 60 * 60);
-            setcookie("Fname", $_SESSION['Fname'], time() + 60 * 60);
-            setcookie("Lname", $_SESSION['Lname'], time() + 60 * 60);
-            setcookie("username", $_SESSION['username'], time() + 60 * 60);
-            setcookie("passport", $_SESSION['passport'], time() + 60 * 60);
-            setcookie("mathematics", $_SESSION['mathematics'], time() + 60 * 60);
-            header("Location: details.php");
 
           }
         } else {
@@ -131,7 +165,7 @@ header('location: WelcomePage.php');
 
     <div class="container">
       <div class="containnSeg">
-        <h4>2019 ENTRANCE EXAMINATION</h4>
+        <h4>2021 ENTRANCE EXAMINATION</h4>
         <h4>BASIC MIDWIFERY</h4>
       </div>
 
@@ -152,7 +186,7 @@ header('location: WelcomePage.php');
     </div>
     </div>
     <div class="container-down">
-      <h6 class="movedisplay dis">Exam malpractice is a crime, do not get involved!!!   ****   2020 OYSCONME</h6>
+      <h6 class="movedisplay dis">Exam malpractice is a crime, do not get involved!!!   ****   2021 OYSCONME</h6>
     </div>
   </div>
 

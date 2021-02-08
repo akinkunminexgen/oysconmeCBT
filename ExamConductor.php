@@ -9,6 +9,13 @@ $subject= $_GET['topic'];
 
 $init = 0;
 if (!isset($_SESSION['timing'])) {
+	//check for time in system_cookies
+	if (isset($_SESSION['timecookies'])) {
+		$hrs = floor(($_SESSION['timecookies']/60)%60);
+		$minute = $_SESSION['timecookies']%60;
+	  $sec = 0;
+	}else {
+	//Calculate time for examination
 $query = "SELECT `timer` From `test`";
 $result = mysqli_query($link, $query)  or die (mysqli_error($link));
 $numrows=mysqli_num_rows($result);
@@ -21,12 +28,13 @@ if ($numrows > 0) {
   $sec = 0;
 	$_SESSION['timing'] = $init;
 }
+}
 }else {
 	$hrs = floor(($_SESSION['timing']/60)%60);
 	$minute = $_SESSION['timing']%60;
   $sec = 0;
 }
-
+//take test ID
   $query12 = "SELECT `id` From `test` WHERE subject='".$subject."'";
   $resul = mysqli_query($link, $query12)  or die (mysqli_error($link));
   $fet = mysqli_fetch_assoc($resul);
@@ -86,12 +94,14 @@ if ($numrows > 0) {
 
 </div>
       <?php
-      //$subject= $_GET['topic'];
+      //count the total number of a particular subject
       include("connection.php");
       $query = "SELECT COUNT(id) as `count` From `question` WHERE test='".$subject."'";
       $result = mysqli_query($link, $query);
 			$fetch = mysqli_fetch_assoc($result);
       $numrow = $fetch['count'];
+
+			if(isset($_SESSION[$subject.'News'])){ $_SESSION[$subject.'News'];}else{$_SESSION[$subject.'News'] = "";}
        ?>
 
 			 <script src="./bootstrap/js/bootstrap.min.js"></script>
@@ -100,7 +110,7 @@ if ($numrows > 0) {
 			 <script src="./Admin/alertify/lib/alertify.min.js"></script>
 
 			 <script type="text/javascript">
-
+// assign php variable to javascript variable
  var totalq = <?php echo $numrow ?>;
  var sub_ject = "<?php echo $subject ?>";
 
@@ -137,6 +147,23 @@ if (hours < 0 ) {
     minutes = minutes - 1;
     seconds = 60;
   }
+	//insert into system cookies table to save up the remain time
+	if (minutes == 58 || minutes == 54 || minutes == 49 || minutes == 44 || minutes == 39 || minutes == 34 || minutes == 29 || minutes == 24 || minutes == 19 || minutes == 14 || minutes == 9 || minutes == 3) {
+		minute = (hours * 60) + minutes;
+		var formData = jQuery(this).serialize();
+		$.ajax({
+									 type:"POST",
+									 url:"systemcookies.php?topic="+sub_ject+"&cokutime="+minute,
+									 data:formData,
+									 success: function(html){
+									 if(html==0){
+										 return false;
+										 }else{
+										 }
+								 }
+							 });
+	}
+
   if (minutes <= 0) {
     hours = hours - 1;
     minutes = 59;
@@ -171,11 +198,18 @@ if(Cookies.get('hour') != null) {
     var inc = -1;
     var ar = [];
     var arraydata = [];
+		var cukies = "<?php echo $_SESSION[$subject.'News']; ?>";
 
 //console.log(ar.pop());
 //console.log(ar);
+//to get random numbers for each subject
 function manipuLate(num_gen, totalq, ar, name){
   //$.cookie.json = true;
+  if(cukies != ""){
+	  var newCukies = cukies.split(",");
+	  Cookies.set(name, newCukies, { expires: 1 });
+  }
+  else{
   if (!Cookies.get(name)){
     while (ar.length < num_gen) {
       var r = Math.floor(Math.random() * totalq) + 1;
@@ -189,7 +223,9 @@ function manipuLate(num_gen, totalq, ar, name){
     //alert('i whelllooooooo is');
     Cookies.getJSON(name);
   }
+}
   return Cookies.getJSON(name);
+
 }
 
 
@@ -202,6 +238,10 @@ min = 1;
 function manipuLateEnglish(num_gen, totalq, ar, name){
 
 //  $.cookie.json = true;
+if(cukies != ""){
+	var newCukies = cukies.split(",");
+	Cookies.set(name, newCukies, { expires: 1 });
+}else{
   if (!Cookies.get(name)){
     while (ar.length < num_gen) {
 		//	alert('part minumum'+ min +' and max is '+ max);
@@ -218,30 +258,30 @@ function manipuLateEnglish(num_gen, totalq, ar, name){
 											    	ar.push(6);
 											    break;
 											  case 10:
-											    	ar.push(11);
+											    	ar.push(17);
 											    break;
 													case 15:
-												    	ar.push(21);
+												    	ar.push(49);
 												    break;
 												  case 20:
-												    	ar.push(31);
+												    	ar.push(59);
 												    break;
 											}
 			if (nom >= 5 && nom < 10) {
-				max = 10
+				max = 16
 				min = 6
 			}
 			if (nom >= 10 && nom < 15) {
-				max = 20
-				min = 11
+				max = 48
+				min = 17
 			}
 			if (nom >= 15 && nom < 20) {
-				max = 30
-				min = 21
+				max = 58
+				min = 49
 			}
 			if (nom >= 20 && nom < 25) {
-				max = 35
-				min = 31
+				max = 88
+				min = 59
 
 			}
 		}
@@ -251,11 +291,13 @@ Cookies.set(name, ar, { expires: 1 });
     }
     //  alert('the is the previous cookies');
   else{
-    //alert('i whelllooooooo is');
+
     Cookies.getJSON(name);
   }
-  return Cookies.getJSON(name);
 }
+	return Cookies.getJSON(name);
+}
+//the end of Englsih randomization
 var n = 1;
 //create a paginate button
 function paginated(num_gen){
@@ -265,7 +307,15 @@ function paginated(num_gen){
 	n++;
 }
 }
-//the end of Englsih randomization
+
+//put array into a variable and change to string to put in d db
+var dab;
+function cookiesStringnify(name){
+		if(Cookies.get(name) != null) {
+			dab = Cookies.getJSON(name).join();
+		}
+	return dab;
+}
 
 //to store random number into cookies
     if (sub_ject == 'Mathematics')
@@ -274,6 +324,7 @@ function paginated(num_gen){
             var num_gen = 20;
             var name ='Mcookie';
           arraydata =  manipuLate(num_gen, totalq, ar, name);
+					cookiesStringnify(name);
 					paginated(num_gen);
 			}
         else if (sub_ject == 'English')
@@ -282,7 +333,7 @@ function paginated(num_gen){
             var num_gen = 25;
             var name ='Ecookie';
               arraydata = manipuLateEnglish(num_gen, totalq, ar, name);
-						//	alert(arraydata);
+						cookiesStringnify(name);
 						paginated(num_gen);
           }
           else if (sub_ject == 'Physics') {
@@ -290,6 +341,7 @@ function paginated(num_gen){
             var num_gen = 15;
             var name ='Pcookie';
               arraydata = manipuLate(num_gen, totalq, ar, name);
+							cookiesStringnify(name);
 							paginated(num_gen);
           }
           else if (sub_ject == 'Chemistry') {
@@ -297,6 +349,7 @@ function paginated(num_gen){
             var num_gen = 15;
             var name ='Ccookie';
               arraydata = manipuLate(num_gen, totalq, ar, name);
+							cookiesStringnify(name);
 							paginated(num_gen);
           }
           else if (sub_ject == 'Biology') {
@@ -304,15 +357,16 @@ function paginated(num_gen){
             var num_gen = 15;
             var name ='Bcookie';
               arraydata = manipuLate(num_gen, totalq, ar, name);
+							cookiesStringnify(name);
 							paginated(num_gen);
           }else {
             $('[data-value=Current-affairs]').css("background-color", "#d4d4d4");
               var num_gen = 10;
               var name ='Cucookie';
                 arraydata = manipuLate(num_gen, totalq, ar, name);
+								cookiesStringnify(name);
 								paginated(num_gen);
           }
-  //alert('total '+totalq);
 
 
 
@@ -365,6 +419,26 @@ $(".btnv").click(function(){
                  }
              }
            });
+//to add to system cookies table
+					 $.ajax({
+					                type:"POST",
+					                url:"systemcookies.php?topic="+sub_ject+"&cokuqno="+dab,
+					                data:formData,
+					                success: function(html){
+					                if(html==0){
+
+					                  //alert("something is wrong");
+
+					                  return false;
+
+					                  }else{
+					                    //alert("everything is alright");
+
+
+
+					                  }
+					              }
+					            });
 
 });
 
@@ -404,6 +478,32 @@ $(".btnv").click(function(){
 
 
 
+//add cookies random number to database
+jQuery(".btnv").click(function(e){
+	 			var formData = jQuery(this).serialize();
+				//alert('you');
+$.ajax({
+               type:"POST",
+               url:"systemcookies.php?topic="+sub_ject+"&cokuqno="+dab,
+               data:formData,
+               success: function(html){
+               if(html==0){
+
+                 //alert("something is wrong");
+
+                 return false;
+
+                 }else{
+                   //alert("everything is alright");
+
+
+
+                 }
+             }
+           });
+
+});
+
 
 function submitted(){
 	var formData = jQuery(this).serialize();
@@ -420,8 +520,8 @@ function submitted(){
 			}else{
 
 			$('#questions').fadeIn()
-			$('#questions').text("THANKS FOR ATTEMPTING THE TEST, AND YOUR SCORE IS ").css({"color":"white", "font-size":"40px"});
-			$('#questions').append(html+"%").css({"color":"red", "font-size":"40px"});
+			$('#questions').text("THANKS FOR ATTEMPTING THE TEST").css({"color":"white", "font-size":"40px"});
+			//$('#questions').append(html+"%").css({"color":"red", "font-size":"40px"});
 			clearInterval(interval);
 			RemoveCookieSubject();
 			RemoveCookieTime();
@@ -442,6 +542,7 @@ function submitted(){
 $('#remC').click(function(e){
 	alertify.confirm("ARE YOU SURE YOU WANT TO SUBMIT? \n IF YOU CLICK OKAY(IT MEANS YOUR EXAM IS OVER)", function (e) {
 	 if (e) {
+		 RemoveCookieTime();
 					submitted();
 	 } else {
 			 // user clicked "cancel"
