@@ -308,7 +308,7 @@ if (isset($_POST['submitFile'])) {
       <div class="form-group">
            <label>Review <strong>students</strong> result by providing
            <span> Student ID number</span></label>
-           <input type="number" name="studid" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Enter Student's ID" required>
+           <input type="text" name="reg_no" class="form-control"  placeholder="Enter Student's Reg No." required>
          </div>
          </div>
 

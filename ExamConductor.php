@@ -56,7 +56,7 @@ if ($numrows > 0) {
             <button type="button" class="btn btn-primary btnv" data-value= "Current-affairs">Current-affairs</button>
       </div>
   <div class="my-2 my-lg-0">
-     <button id="remC" class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+     <button id="remC" class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
 </div>
 </nav>
 <div class="container-flu">
@@ -141,6 +141,8 @@ if (hours < 0 ) {
   $('#questions').hide();
   $('.nextq').hide();
   $('.prev').hide();
+	RemoveCookieTime();
+			submitted();
 }else {
 
  if (seconds <= 0) {
@@ -148,8 +150,10 @@ if (hours < 0 ) {
     seconds = 60;
   }
 	//insert into system cookies table to save up the remain time
-	if (minutes == 58 || minutes == 54 || minutes == 49 || minutes == 44 || minutes == 39 || minutes == 34 || minutes == 29 || minutes == 24 || minutes == 19 || minutes == 14 || minutes == 9 || minutes == 3) {
+	var mod = minutes % 2;
+if(mod == 0) {
 		minute = (hours * 60) + minutes;
+		if(seconds == 30){
 		var formData = jQuery(this).serialize();
 		$.ajax({
 									 type:"POST",
@@ -162,6 +166,7 @@ if (hours < 0 ) {
 										 }
 								 }
 							 });
+						 }
 	}
 
   if (minutes <= 0) {
@@ -520,7 +525,7 @@ function submitted(){
 			}else{
 
 			$('#questions').fadeIn()
-			$('#questions').text("THANKS FOR ATTEMPTING THE TEST").css({"color":"white", "font-size":"40px"});
+			$('#questions').text("SUBMITTING... THANKS FOR ATTEMPTING THE TEST.").css({"color":"white", "font-size":"40px"});
 			//$('#questions').append(html+"%").css({"color":"red", "font-size":"40px"});
 			clearInterval(interval);
 			RemoveCookieSubject();
@@ -528,7 +533,7 @@ function submitted(){
 			$('#remC').hide();
 			$('.sub').hide();
 			$(".btnv").hide();
-			var delay = 10000;
+			var delay = 6000;
 			 setTimeout((function(){
 
 				 window.location = 'WelcomePage.php?logout=1'  }), delay);

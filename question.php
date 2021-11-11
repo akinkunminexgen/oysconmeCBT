@@ -67,7 +67,7 @@ else{
 <div id="questions"> <h6><textarea style="width: 500px; height : 180px;" readonly>QUESTION '.$num_list.': '.$_SESSION['question'].'</textarea></h6>
 
  </td>
- <td> <img src="./'.$_SESSION['passport'].'" alt="passport"> </td></tr>
+ <td> <img src="./'.$_SESSION['passport'].'" alt="passport" style="width: 120px; height : 130px;" > </td></tr>
  <tr><td>
      <label> <strong>A</strong>
        <input type="radio" name="RadioGroup1" '.$opt1.' value="'.$_SESSION['opt1'].'" id="RadioGroup1_0">

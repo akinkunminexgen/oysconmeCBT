@@ -80,7 +80,9 @@ if (!$_SESSION['stid']){
    </div>
 
   </div>
-
+	<br>
+	<br>
+	<br>
 
   <div class="container-down">
     <h6 class="movedisplay dis">Goodluck in your exam</h6>

@@ -1,14 +1,27 @@
 <?php
 
 session_start();
-$idno= $_GET['studid'];
-  if (array_key_exists("studid", $_GET)){
+$idST= $_GET['reg_no'];
+  if (array_key_exists("reg_no", $_GET)){
 include("connection.php");
 
 
-if(!$_GET['studid']){
+if(!$_GET['reg_no']){
   echo "<p>An ID number is required</p>";
 }else{
+
+  //get id for students
+  $sqlST = "SELECT * From `student` WHERE registration = '".$idST."'";
+  $resST = mysqli_query($link, $sqlST) or die (mysqli_error($link));
+  $num_row = mysqli_num_rows($resST);
+  if ($num_row > 0) {
+    $resST = mysqli_fetch_assoc($resST);
+    $idno= $resST['id'];
+  }
+  else {
+    echo "No result for student Yet ";
+    exit();
+  }
 
   $res_Page = 10;
   $sql = "SELECT * From `testattempt` WHERE stdid = '".$idno."'";
@@ -31,6 +44,17 @@ $test = "test";
 
 $display="";
 
+//to display the Score
+$query1 = "SELECT * From `testscore` WHERE stdid = '".$idno."'";
+$result1 = mysqli_query($link, $query1) or die (mysqli_error($link));
+$numrow1 = mysqli_num_rows($result1);
+if($numrow1 > 0){
+  $scor = mysqli_fetch_assoc($result1);
+  $score = 'Score is '.$scor['score'];
+}else {
+  $score = "Score not yet confirmed";
+}
+
 $query1 = "SELECT * From $student WHERE id = '".$idno."'";
 $result1 = mysqli_query($link, $query1) or die (mysqli_error($link));
 $numrow1 = mysqli_num_rows($result1);
@@ -45,6 +69,18 @@ if($numrow1 > 0){
   <div class="box-header with-border">
     <h3 class="box-title"> Review Test Score </h3>
     </div>
+    <div class="box-footer bg-gray">
+    <div class="row">
+    <div class="col-md-6">
+      Update Student timer <a href="#" <span class="badge text-danger"> '.$idno.'</span></a>
+    </div>
+    <div class="col-md-6 text-right">
+      <span class="badge">'.$score.'</span>
+    </div>
+
+      </div>
+    </div>
+
     <div class="row">
     <div class="col-xs-12">
   <div  class="box-body">
@@ -55,6 +91,7 @@ if($numrow1 > 0){
       <th>Name</th>
       <th>Question No</th>
       <th>Subject</th>
+      <th>student answer</th>
       <th>Answer</th>
       <th>Remark</th>
     </tr>
@@ -107,6 +144,11 @@ $number = 1;
         </td>
         <td>
             <label>
+              '.$row2['correctans'].'
+              </label>
+        </td>
+        <td>
+            <label>
               '.$display.'
               </label>
         </td></tr>
@@ -149,14 +191,14 @@ else{
  ?>
  <?php include('script.php') ?>
  <script type="text/javascript">
-var stud = "<?php echo $idno ?>";
+var stud = "<?php echo $idST ?>";
  $('.page_num1').click(function(){
    //alert('okay it is time');
    var valueR = $(this).data('value');
      var formData = jQuery(this).serialize();
                $.ajax({
                  type:"GET",
-                 url:"review.php?studid="+ stud +" &page="+valueR,
+                 url:"review.php?reg_no="+ stud +" &page="+valueR,
                  data:formData,
                  success: function(html){
                  if(html==0){
@@ -164,7 +206,7 @@ var stud = "<?php echo $idno ?>";
                    }else{
 
                      //$('#alrtD').append(html)
-                     $( "#refes" ).load("review.php?studid="+stud+"&page="+valueR+"#refes" );
+                     $( "#refes" ).load("review.php?reg_no="+stud+"&page="+valueR+"#refes" );
                    }
                }
              });

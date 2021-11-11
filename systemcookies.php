@@ -36,12 +36,12 @@ if($row > 0){
 }
 
 if (isset($_GET['cokutime'])) {
-  if (!isset($_SESSION[$subject.'tym'])) {
-      $_SESSION[$subject.'tym'] = 'yes';
+//  if (!isset($_SESSION[$subject.'tym'])) {
+  //    $_SESSION[$subject.'tym'] = 'yes';
       $query2 = "UPDATE `system_cookies` SET time_cookies ='".$_GET['cokutime']."', login_status = 'ACTIVE' WHERE stdid='".$_SESSION['stid']."'";
       $result = mysqli_query($link, $query2) or die (mysqli_error($link));
       echo "successful";
-      }
+    //  }
 }
 
 

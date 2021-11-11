@@ -166,18 +166,18 @@ header('location: WelcomePage.php');
     <div class="container">
       <div class="containnSeg">
         <h4>2021 ENTRANCE EXAMINATION</h4>
-        <h4>BASIC MIDWIFERY</h4>
+        <h4>GENERAL NURSING</h4>
       </div>
 
     <div class="containn">
       <div id="error" ><?php echo $error; ?></div>
       <form method="post">
   <div class="form-group">
-    <label for="exampleInputEmail1">Examination Number</label>
-    <input type="text" name="regNo" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required placeholder="Enter Exam number">
+    <label for="exampleInputEmail1">Registration Number</label>
+    <input type="text" name="regNo" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required placeholder="Enter Reg number">
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
+    <label for="exampleInputPassword1">Pin</label>
     <input type="password" name="password" class="form-control" id="exampleInputPassword1" required placeholder="Pin">
   </div>
   <button type="submit" name="submit" class="btn btn-primary">Login</button>

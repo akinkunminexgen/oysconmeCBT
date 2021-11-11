@@ -54,6 +54,7 @@ while($row = mysqli_fetch_assoc($result1)){
   $result2 = mysqli_query($link, $query2) or die (mysqli_error($link));
   while($row2 = mysqli_fetch_assoc($result2)){
 
+
       echo '
 
       <tr><td>
@@ -73,7 +74,7 @@ while($row = mysqli_fetch_assoc($result1)){
       </td>
       <td>
           <label>
-            <button data-value="'. $row['stdid'].'" class="btn-primary 4rmviewrslt">View</button>
+            <button data-value="'. $row2['registration'].'" class="btn-primary 4rmviewrslt">View</button>
             </label>
       </td></tr>
 
@@ -109,23 +110,22 @@ else{
 <script type="text/javascript">
 
 $('.4rmviewrslt').click(function(){
-  var valueR = $(this).data('value');
+  var stud = $(this).data('value');
+  var valueR = 1;
 //e.preventDefault();
   var formData = jQuery(this).serialize();
             $.ajax({
               type:"GET",
-              url:"review.php?studid="+ valueR,
+              url:"review.php?reg_no="+stud+" &page="+valueR,
               data:formData,
               success: function(html){
-              if(html==0){
-                return false;
+                if(html==0){
+                  return false;
+                  }else{
 
-                }else{
-                  //alert(html);
-                  $('#fetch').empty(html)
-                  $('#fetch').append(html)
-
-                }
+                    //$('#alrtD').append(html)
+                    $( "#refes" ).load("review.php?reg_no="+stud+"&page="+valueR+"#refes" );
+                  }
             }
           });
           //e.preventDefault();
