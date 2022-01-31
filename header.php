@@ -117,7 +117,72 @@
         margin: 0 auto;
       }
 
-      
+
+      .fixation
+      {
+        position: absolute;
+        bottom: 80px;
+        right: 15px;
+      }
+
+      #fixation
+      {
+        margin: -950px;
+      }
+
+      .buttocks
+      {
+      background-color:green;
+      font-size: 20px;
+      color: black;
+      border: solid black 3px;
+      width:51px;
+      height: 41px;
+      }
+
+      .buttocks:hover
+      {
+        background-color:red;
+        font-size: 20px;
+        color: black;
+        border: solid black 3px;
+        width:51px;
+        height: 41px;
+      }
+
+      #resulter
+      {
+        font-size: 30px;
+        background-color:white;
+        border: solid black 2px;
+        width:166px;
+        height: 45px;
+      }
+
+</style>
+<script>
+  //function that display value
+  function dis(val)
+  {
+    document.getElementById("resulter").value+=val
+  }
+
+  //function that evaluates the digit and return resulter
+  function solve()
+  {
+    let x = document.getElementById("resulter").value
+    let y = eval(x)
+    document.getElementById("resulter").value = y
+  }
+
+  //function that clear the display
+  function clr()
+  {
+    document.getElementById("resulter").value = ""
+  }
+</script>
+
+
 </style>
 
   </head>

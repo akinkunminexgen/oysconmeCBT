@@ -1,10 +1,18 @@
 <?php
 
 session_start();
-//if ($_SESSION['privilege'] !== 'GOLD'){
 
-//	header('location: dashboard.php');
-//}
+if(!$_SESSION['id']){
+
+ header('location: login.php');
+}
+if ($_SESSION['privilege'] !== 'High'){
+
+  $_SESSION['alert'] = "alert-warning";
+  $_SESSION['message'] = "You are not permitted to register an admin";
+
+	header('location: dashboard.php');
+}
 
  ?>
 

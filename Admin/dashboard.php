@@ -114,6 +114,16 @@ if (isset($_POST['submitFile'])) {
     </section>
     <section class="content" id="fetch">
 
+      <?php if (isset($_SESSION['alert'])) {
+        echo '<div class="alert '.$_SESSION['alert'].' alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                        <p id="alertLOGP">'.$_SESSION['message'].'<p>
+                    </div>';
+      }
+      unset($_SESSION['alert']);
+      ?>
+
       <div class="box box-default" id="addQn">
       <div class="box-header with-border">
         <h3 class="box-title"><strong>INSERT/ADD</strong> Questions</h3>
@@ -351,7 +361,7 @@ function isNumberKey(evt){
     return true;
 } //for targeting numbers only for an input tag
 
-$('.clickSTD').click(function(){
+/*$('.clickSTD').click(function(){
   //e.preventDefault();
   var formData = jQuery(this).serialize();
 
@@ -372,7 +382,7 @@ $('.clickSTD').click(function(){
             }
           });
 
-});
+});*/
 
 $('#AllStd').click(function(){
   //e.preventDefault();

@@ -1,7 +1,9 @@
 <?php
 
 session_start();
-if ($_SESSION['privilege'] !== 'GOLD'){
+if ($_SESSION['privilege'] !== 'High'){
+	  $_SESSION['alert'] = "alert-warning";
+	  $_SESSION['message'] = "You are not permitted to view the timer";
 
 	header('location: dashboard.php');
 }
@@ -107,7 +109,7 @@ $('#clkB').submit(function(e){
 
 
 $(document).ready(function(){
-setInterval(function(){ updatetimer();},2000);
+setInterval(function(){ updatetimer();},3000);
 
 function updatetimer(){
     var formData = jQuery(this).serialize();

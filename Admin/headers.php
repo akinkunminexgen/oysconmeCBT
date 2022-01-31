@@ -93,7 +93,7 @@
           </a>
         </li>
 
-        <li class="treeview">
+        <li class="treeview owo0">
           <a href="#">
             <i class="fa fa-pie-chart"></i>
             <span>Students Information</span>
@@ -107,7 +107,7 @@
             <li><a href="#"><i class="fa fa-circle-o"></i> Update Registration</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview owo1">
           <a href="#">
             <i class="fa fa-edit"></i>
             <span> View Questions</span>
@@ -116,16 +116,16 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#" class="clickquestion" data-value= "Mathematics"><i class="fa fa-circle-o"></i> Mathematics</a></li>
-            <li><a href="#" class="clickquestion" data-value= "English"><i class="fa fa-circle-o"></i> English</a></li>
-            <li><a href="#" class="clickquestion" data-value= "Physics"><i class="fa fa-circle-o"></i> Physics</a></li>
-            <li><a href="#" class="clickquestion" data-value= "Chemistry"><i class="fa fa-circle-o"></i> Chemistry</a></li>
-            <li><a href="#" class="clickquestion" data-value= "Biology"><i class="fa fa-circle-o"></i> Biology</a></li>
-            <li><a href="#" class="clickquestion" data-value= "Current-Affairs"><i class="fa fa-circle-o"></i> Current Affairs</a></li>
+            <li><a href="#Mathematics" class="clickquestion" data-value= "Mathematics"><i class="fa fa-circle-o"></i> Mathematics</a></li>
+            <li><a href="#English" class="clickquestion" data-value= "English"><i class="fa fa-circle-o"></i> English</a></li>
+            <li><a href="#Physics" class="clickquestion" data-value= "Physics"><i class="fa fa-circle-o"></i> Physics</a></li>
+            <li><a href="#Chemistry" class="clickquestion" data-value= "Chemistry"><i class="fa fa-circle-o"></i> Chemistry</a></li>
+            <li><a href="#Biology" class="clickquestion" data-value= "Biology"><i class="fa fa-circle-o"></i> Biology</a></li>
+            <li><a href="#current-affairs" class="clickquestion" data-value= "Current-Affairs"><i class="fa fa-circle-o"></i> Current Affairs</a></li>
           </ul>
         </li>
 
-        <li class="treeview">
+        <li class="treeview owo2">
           <a href="#">
             <i class="fa fa-calculator"></i> <span>Result</span>
             <span class="pull-right-container">
@@ -133,14 +133,16 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#" class="clickSTD"><i class="fa fa-circle-o"></i> Student Result page</a></li>
-            <li><a href="#" id="revPg"><i class="fa fa-circle-o"></i> Examination review Page</a></li>
+            <li><a href="studentresult.php" class="clickSTD"><i class="fa fa-circle-o text-green"></i> Student Result page</a></li>
+            <!--<li><a href="#" id="revPg"><i class="fa fa-circle-o"></i> Examination review Page</a></li>-->
           </ul>
         </li>
 
 
+        <li><a href="./studentslogin.php"><i class="fa fa-book"></i> <span>Manage Student's Login</span></a></li>
         <li><a href="/cbt exam/WelcomePage.php"><i class="fa fa-book"></i> <span>Examination Page</span></a></li>
         <li class="header">LABELS</li>
+        <li><a href="timer.php"><i class="fa fa-clock-o text-green"></i> <span>Timer</span></a></li>
         <li><a href="register.php"><i class="fa fa-circle-o text-aqua"></i> <span>Register Account</span></a></li>
         <li><a href="login.php?logout=1"><i class="fa fa-circle-o text-red"></i> <span>Sign Out</span></a></li>
 

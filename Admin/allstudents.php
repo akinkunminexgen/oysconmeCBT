@@ -1,7 +1,11 @@
 <?php
+ob_start();
 session_start();
 
 include("connection.php");
+include ('mypagination.php');
+
+
 $student = "student";
 
 $res_Page = 10;
@@ -12,12 +16,13 @@ $num_row = mysqli_num_rows($res);
 $num_page = ceil($num_row/$res_Page);
 
 if(!isset($_GET['page'])){
-  $page = 1;
+  $paged = 1;
 }else {
-  $page = $_GET['page'];
+  $paged = $_GET['page'];
 }
 
-$off_set = ($page - 1) * $res_Page;
+$off_set = ($paged - 1) * $res_Page;
+$chpage = $paged;
 
 $query = "SELECT * From $student ORDER BY `Firstname` ASC LIMIT ".$off_set.",".$res_Page."";
 $result = mysqli_query($link, $query) or die (mysqli_error($link));
@@ -33,10 +38,9 @@ echo '
 
         <tr>
             <th>ID</th>
+            <th>Username</th>
             <th>First name</th>
             <th>Last name</th>
-            <th>Username</th>
-            <th>Email Address</th>
           </tr>
 
 ';
@@ -53,22 +57,17 @@ while($row = mysqli_fetch_assoc($result)){
   </td>
   <td>
       <label>
+        '.$row['registration'].'
+        </label>
+  </td>
+  <td>
+      <label>
         '.$row['Firstname'].'
         </label>
   </td>
   <td>
       <label>
         '.$row['Lastname'].'
-        </label>
-  </td>
-  <td>
-      <label>
-        '.$row['username'].'
-        </label>
-  </td>
-  <td>
-      <label>
-        '.$row['Email'].'
         </label>
   </td>
   </tr>
@@ -78,24 +77,20 @@ while($row = mysqli_fetch_assoc($result)){
 }
 
 echo ' </table>
-        <div id="alrtD"></div>
         </div>
         </div>
         </div>
-        <ul class="pagination pagination-sm no-margin pull-right">
-      ';
+                <div class="box-footer bg-gray">
+                <ul class="pagination pagination-sm no-margin pull-left">';
 
-      for ($page = 1; $page <= $num_page ; $page++) {
-        echo' <li><button title="Page '.$page.'" class="page_num btn btn-primary" data-value ='.$page.'>'.$page.'</button></li>';
-      }
-
-  echo    '
-        </ul>
-        <div class="box-footer bg-gray">
-          Students details
-        </div>
-        </div>
+              paginateAKIN($paged, $num_page, $chpage);
+  echo '        </ul>
+                <div class="pull-right text-muted text-bold"> Student List</div>
+                </div>
+                </div>
 ';
+
+
 
  ?>
  <?php include('script.php') ?>
@@ -138,7 +133,9 @@ echo ' </table>
                      }else{
 
                        //$('#alrtD').append(html)
-                       $( "#refes" ).load("allstudents.php?page="+ valueR +"#refes" );
+                       $('#fetch').empty();
+                       $('#fetch').append(html);
+                       //$( "#refes" ).load("allstudents.php?page="+ valueR +"#refes" );
                      }
                  }
                });

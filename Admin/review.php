@@ -57,11 +57,13 @@ if($numrow1 > 0){
 
 $query1 = "SELECT * From $student WHERE id = '".$idno."'";
 $result1 = mysqli_query($link, $query1) or die (mysqli_error($link));
+$rolling = mysqli_query($link, $query1) or die (mysqli_error($link));
 $numrow1 = mysqli_num_rows($result1);
 if($numrow1 > 0){
   $quer = "SELECT * From $testattempt WHERE stdid = '".$idno."' LIMIT ".$off_set.",".$res_Page."";
   $resul = mysqli_query($link, $quer) or die (mysqli_error($link));
   $numro = mysqli_num_rows($resul);
+  $rolling = mysqli_fetch_assoc($rolling);
   if($numro < 1){
     echo "No ID in attempt";
   }else{
@@ -72,7 +74,7 @@ if($numrow1 > 0){
     <div class="box-footer bg-gray">
     <div class="row">
     <div class="col-md-6">
-      Update Student timer <a href="#" <span class="badge text-danger"> '.$idno.'</span></a>
+     Name: <a href="#" <span class="badge text-danger"> '.$rolling['Lastname'].', '.$rolling['Firstname'].'</span></a>
     </div>
     <div class="col-md-6 text-right">
       <span class="badge">'.$score.'</span>
@@ -88,7 +90,6 @@ if($numrow1 > 0){
 
   <tr>
       <th>Number</th>
-      <th>Name</th>
       <th>Question No</th>
       <th>Subject</th>
       <th>student answer</th>
@@ -120,11 +121,6 @@ $number = 1;
         <tr><td>
             <label>
               '.$number.'
-              </label>
-        </td>
-        <td>
-            <label>
-              '.$row1['Firstname'].' '.$row1['Lastname'].'
               </label>
         </td>
         <td>
