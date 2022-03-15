@@ -195,12 +195,13 @@ var Wlh = $.cookie('WLH');
                       $('#alertLOG').show();
                       $('#alertLOGP').empty(html);
                       $('#alertLOGP').append('No Student with such ID number');
-                      setTimeout(function(){$('#alertLOG').hide() ; }, 2000);
+                      setTimeout(function(){$('#alertLOG').hide() ; }, 3000);
                     }else if(html=="No Login Status"){
                       $('#showLOG').empty(html);
                         $('#alertLOG').show();
+                        $('#alertLOGP').empty(html);
                         $('#alertLOGP').append('The Student is not yet present for the examination');
-                          setTimeout(function(){$('#alertLOG').hide() ; }, 2000);
+                          setTimeout(function(){$('#alertLOG').hide() ; }, 3000);
                     }
                     else{
                       //$('#alertRev').empty(html);

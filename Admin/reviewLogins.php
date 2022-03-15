@@ -8,6 +8,7 @@ include("connection.php");
 
 if(!$_GET['reg_no']){
   echo "<p>An ID number is required</p>";
+  exit();
 }else{
 
   //get id for students
@@ -88,6 +89,7 @@ echo '
     ';
   }else {
     echo "No Login Status";
+    exit();
   }
 }
 }

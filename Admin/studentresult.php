@@ -90,7 +90,7 @@ $(document).ready(function() {
                   //alert("something is wrong");
                   return false;
 
-                  }else{
+                }else{
                     $('#fetch').empty(html)
                     $('#fetch').append(html)
                   }

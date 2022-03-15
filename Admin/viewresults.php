@@ -39,18 +39,17 @@ if($numrow1 > 0){
     </div>
 
     <div class="row">
-        <div class="col-md-8 col-xs-6 col-sm-4">
-        </div>
-        <div class="col-md-2 col-xs-4 col-sm-3">
+
+        <div class="col-lg-4 col-md-6">
           <input type="text" class="form-control" id="regnum" placeholder="Reg No." required/>
         </div>
-        <div class="col-md-1 mb-1">
+        <div class="col-md-4">
             <button class="searchSTD btn btn-primary" type="submit">Search</button>
           </div>
     </div>
 
     <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
   <div  class="box-body">
   <table class="table table-bordered table-hover bg-gray">
 
@@ -106,14 +105,31 @@ echo ' </table>
 
               paginateAKIN($paged, $num_page, $chpage);
   echo '        </ul>
-                <div class="pull-right text-muted text-bold"> Student Score</div>
-                </div>
+                  <div class="pull-right text-muted text-bold">
+                    <div class="btn-group dropup">
+                   <button data-toggle="dropdown" class="btn btn-success btn-xs mb-2 dropdown-toggle" title="Generate result"><i class="fa fa-user icon-white"></i> Download Result <span class="caret"></span></button>
+                  <ul class="dropdown-menu dropdown-primary drop-drop">
+
+                    <li><a href="viewresults.php?download=indigene"><i class="fa fa-print"></i><button class="btn btn-info btn-xs">For Indigene</button></a></li>
+                    <li><a href="viewresults.php?download=nonindigene"><i class="fa fa-print"></i><button class="btn btn-info btn-xs">For Non-indigene</button></a></li>
+
+                    <li class="divider"></li>
+                    <li><span class="badge badge-secondary text-info">Download Applicants Result</span></li>
+                  </ul>
+                  </div>
+                 </div>
                 </div>
 ';
 
 }
 else{
-   echo "no results";
+ echo '<div class="alert alert-warning alert-dismissible">
+             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+               <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                 <p id="alertLOGP">No results yet<p>
+             </div>';
+
+   exit();
 }
 }
 
@@ -139,12 +155,12 @@ if (isset($_GET['reg_no'])) {
         </div>
 
         <div class="row">
-            <div class="col-md-8 col-xs-6 col-sm-4">
+            <div class="col-md-8 col-xs-12 col-sm-4">
             </div>
-            <div class="col-md-2 col-xs-4 col-sm-3">
+            <div class="col-md-2 col-xs-12 col-sm-3">
               <input type="text" class="form-control" id="regnum" placeholder="Reg No." required/>
             </div>
-            <div class="col-md-1 mb-1">
+            <div class="col-md-1 col-xs-12  mb-1">
                 <button class="searchSTD btn btn-primary" type="submit">Search</button>
               </div>
         </div>
@@ -213,9 +229,61 @@ if (isset($_GET['reg_no'])) {
 
 }
 
+//Expoort result to CSV iles
+if (isset($_GET['download'])) {
+  if ($_GET['download'] == 'indigene') {
+    $stat = '=31';
+  }else {
+    $stat = '!=31';
+  }
+
+  $sql = "SELECT registration, Lastname, Firstname, Middlename, name, locations.lga, Score From student
+          INNER JOIN testscore ON student.id=testscore.stdid INNER JOIN states ON student.state=states.id
+          INNER JOIN locations ON locations.id=student.lga WHERE states.id $stat ORDER BY score DESC";
+  $result = mysqli_query($link, $sql) or die (mysqli_error($link));
+  $num_row = mysqli_num_rows($result);
+
+  if($num_row > 0){
+
+  // file name for download
+  $fileName = "StudentResults".date('Ymd').".xls";
+
+  // headers for download
+  header("Content-Type: application/vnd.ms-excel");
+  header("Content-Disposition: attachment; filename=\"$fileName\"");
+
+  $flag = false;
+  while ($row = mysqli_fetch_assoc($result)){
+        if(!$flag){
+            // display column names as first row
+            echo implode("\t", array_keys($row)) . "\n";
+            $flag = true;
+        }
+        echo implode("\t", array_values($row)) . "\n";
+    }
+
+      exit();
+
+}else {
+
+      $_SESSION['alert']= 'alert-warning';
+    $_SESSION['message']= "An error as occurred!";
+    header("refresh: 3");
+    exit();
+}
+
+}
+
+
+
+
  ?>
 <?php include('script.php') ?>
 <script type="text/javascript">
+
+$(".dropdown-toggle").click(function(){
+  $(".drop-drop").toggle();
+});
 
 $('.4rmviewrslt1').click(function(){
   var stud = $(this).data('value');
@@ -271,6 +339,7 @@ $('.searchSTD').click(function(e){
         }
   //e.preventDefault();
   });
+
 
   //search for student
   $('.4delete').click(function(e){

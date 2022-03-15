@@ -165,8 +165,8 @@ header('location: WelcomePage.php');
 
     <div class="container">
       <div class="containnSeg">
-        <h4>2021 ENTRANCE EXAMINATION</h4>
-        <h4>GENERAL NURSING</h4>
+        <h4>2022 ENTRANCE EXAMINATION</h4>
+        <h4>BASIC MIDWIFERY</h4>
       </div>
 
     <div class="containn">
@@ -186,7 +186,7 @@ header('location: WelcomePage.php');
     </div>
     </div>
     <div class="container-down">
-      <h6 class="movedisplay dis">Exam malpractice is a crime, do not get involved!!!   ****   2021 OYSCONME</h6>
+      <h6 class="movedisplay dis">Exam malpractice is a crime, do not get involved!!!   ****   2022 OYSCONME</h6>
     </div>
   </div>
 
